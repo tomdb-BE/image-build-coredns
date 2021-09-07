@@ -4,32 +4,28 @@ ifeq ($(ARCH),)
 ARCH=$(shell go env GOARCH)
 endif
 
-BUILD_META=-build$(shell date +%Y%m%d)
+BUILD_META ?= -multiarch-build$(shell date +%Y%m%d)
 ORG ?= rancher
 PKG_COREDNS ?= github.com/coredns/coredns
 SRC_COREDNS ?= github.com/coredns/coredns
 PKG_AUTOSCALER ?= github.com/kubernetes-sigs/cluster-proportional-autoscaler
 SRC_AUTOSCALER ?= github.com/kubernetes-sigs/cluster-proportional-autoscaler 
-TAG ?= v1.8.3$(BUILD_META)
+TAG ?= v1.8.4$(BUILD_META)
+UBI_IMAGE ?= centos:7
+GOLANG_VERSION ?= v1.16.6b7-multiarch
 export DOCKER_BUILDKIT?=1
-
-ifneq ($(DRONE_TAG),)
-TAG := $(DRONE_TAG)
-endif
-
-ifeq (,$(filter %$(BUILD_META),$(TAG)))
-$(error TAG needs to end with build metadata: $(BUILD_META))
-endif
 
 AUTOSCALER_BUILD_TAG := $(TAG:v%=%)
 
 .PHONY: image-build-coredns
 image-build-coredns:
 	docker build \
-		--pull \
 		--build-arg PKG=$(PKG_COREDNS) \
 		--build-arg SRC=$(SRC_COREDNS) \
 		--build-arg TAG=$(TAG:$(BUILD_META)=) \
+                --build-arg ARCH=$(ARCH) \
+                --build-arg GO_IMAGE=$(ORG)/hardened-build-base:$(GOLANG_VERSION) \
+                --build-arg UBI_IMAGE=$(UBI_IMAGE) \
 		--target coredns \
 		--tag $(ORG)/hardened-coredns:$(TAG) \
 		--tag $(ORG)/hardened-coredns:$(TAG)-$(ARCH) \
@@ -54,10 +50,12 @@ image-scan-coredns:
 .PHONY: image-build-autoscaler
 image-build-autoscaler:
 	docker build \
-		--pull \
 		--build-arg PKG=$(PKG_AUTOSCALER) \
 		--build-arg SRC=$(SRC_AUTOSCALER) \
 		--build-arg TAG=$(AUTOSCALER_BUILD_TAG:$(BUILD_META)=) \
+                --build-arg ARCH=$(ARCH) \
+                --build-arg GO_IMAGE=$(ORG)/hardened-build-base:$(GOLANG_VERSION) \
+                --build-arg UBI_IMAGE=$(UBI_IMAGE) \
 		--target autoscaler \
 		--tag $(ORG)/hardened-cluster-autoscaler:$(TAG) \
 		--tag $(ORG)/hardened-cluster-autoscaler:$(TAG)-$(ARCH) \
