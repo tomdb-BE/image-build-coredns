@@ -10,9 +10,9 @@ PKG_COREDNS ?= github.com/coredns/coredns
 SRC_COREDNS ?= github.com/coredns/coredns
 PKG_AUTOSCALER ?= github.com/kubernetes-sigs/cluster-proportional-autoscaler
 SRC_AUTOSCALER ?= github.com/kubernetes-sigs/cluster-proportional-autoscaler 
-TAG ?= v1.8.4$(BUILD_META)
+TAG ?= v1.8.5$(BUILD_META)
 UBI_IMAGE ?= centos:7
-GOLANG_VERSION ?= v1.16.6b7-multiarch
+GOLANG_VERSION ?= v1.16.7b7-multiarch
 export DOCKER_BUILDKIT?=1
 
 AUTOSCALER_BUILD_TAG := $(TAG:v%=%)

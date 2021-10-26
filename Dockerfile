@@ -1,6 +1,6 @@
 ARG UBI_IMAGE
 ARG GO_IMAGE
-ARG TAG="v1.8.4"
+ARG TAG="v1.8.3"
 ARG ARCH="amd64"
 FROM ${UBI_IMAGE} as ubi
 FROM ${GO_IMAGE} as base-builder
