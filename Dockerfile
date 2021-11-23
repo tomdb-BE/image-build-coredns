@@ -1,6 +1,6 @@
 ARG UBI_IMAGE
 ARG GO_IMAGE
-ARG TAG="v1.8.3"
+ARG TAG="v1.8.5"
 ARG ARCH="amd64"
 FROM ${UBI_IMAGE} as ubi
 FROM ${GO_IMAGE} as base-builder
@@ -45,9 +45,13 @@ RUN go-assert-boring.sh cluster-proportional-autoscaler
 RUN install -s cluster-proportional-autoscaler /usr/local/bin
 
 FROM ubi as coredns
+RUN microdnf update -y && \
+    rm -rf /var/cache/yum
 COPY --from=coredns-builder /usr/local/bin/coredns /coredns
 ENTRYPOINT ["/coredns"]
 
 FROM ubi as autoscaler
+RUN microdnf update -y && \
+    rm -rf /var/cache/yum
 COPY --from=autoscaler-builder /usr/local/bin/cluster-proportional-autoscaler /cluster-proportional-autoscaler
 ENTRYPOINT ["/cluster-proportional-autoscaler"]
