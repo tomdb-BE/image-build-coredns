@@ -1,10 +1,5 @@
-<<<<<<< HEAD
-ARG UBI_IMAGE
-ARG GO_IMAGE
-=======
 ARG UBI_IMAGE=registry.access.redhat.com/ubi7/ubi-minimal:latest
 ARG GO_IMAGE=rancher/hardened-build-base:v1.16.10b7
->>>>>>> 3ff52762cf05a2ed6f13d38cdca2719d9b7b97ab
 ARG TAG="v1.8.5"
 ARG ARCH="amd64"
 FROM ${UBI_IMAGE} as ubi
