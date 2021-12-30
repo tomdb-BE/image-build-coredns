@@ -12,7 +12,7 @@ PKG_AUTOSCALER ?= github.com/kubernetes-sigs/cluster-proportional-autoscaler
 SRC_AUTOSCALER ?= github.com/kubernetes-sigs/cluster-proportional-autoscaler 
 TAG ?= v1.8.5$(BUILD_META)
 UBI_IMAGE ?= registry.access.redhat.com/ubi8/ubi-minimal:latest
-GOLANG_VERSION ?= v1.16.10b7-multiarch
+GOLANG_VERSION ?= v1.17.5b7-multiarch
 export DOCKER_BUILDKIT?=1
 
 AUTOSCALER_BUILD_TAG := $(TAG:v%=%)
@@ -23,9 +23,9 @@ image-build-coredns:
 		--build-arg PKG=$(PKG_COREDNS) \
 		--build-arg SRC=$(SRC_COREDNS) \
 		--build-arg TAG=$(TAG:$(BUILD_META)=) \
-                --build-arg ARCH=$(ARCH) \
                 --build-arg GO_IMAGE=$(ORG)/hardened-build-base:$(GOLANG_VERSION) \
                 --build-arg UBI_IMAGE=$(UBI_IMAGE) \
+		--build-arg ARCH=$(ARCH) \
 		--target coredns \
 		--tag $(ORG)/hardened-coredns:$(TAG) \
 		--tag $(ORG)/hardened-coredns:$(TAG)-$(ARCH) \
@@ -53,9 +53,9 @@ image-build-autoscaler:
 		--build-arg PKG=$(PKG_AUTOSCALER) \
 		--build-arg SRC=$(SRC_AUTOSCALER) \
 		--build-arg TAG=$(AUTOSCALER_BUILD_TAG:$(BUILD_META)=) \
-                --build-arg ARCH=$(ARCH) \
                 --build-arg GO_IMAGE=$(ORG)/hardened-build-base:$(GOLANG_VERSION) \
                 --build-arg UBI_IMAGE=$(UBI_IMAGE) \
+		--build-arg ARCH=$(ARCH) \
 		--target autoscaler \
 		--tag $(ORG)/hardened-cluster-autoscaler:$(TAG) \
 		--tag $(ORG)/hardened-cluster-autoscaler:$(TAG)-$(ARCH) \
