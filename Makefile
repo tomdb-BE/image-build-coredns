@@ -32,6 +32,7 @@ image-build-coredns:
 		--build-arg SRC=$(SRC_COREDNS) \
 		--build-arg TAG=$(TAG:$(BUILD_META)=) \
 		--build-arg ARCH=$(ARCH) \
+		--build-arg ORG=$(ORG) \
 		--target coredns \
 		--tag $(ORG)/hardened-coredns:$(TAG) \
 		--tag $(ORG)/hardened-coredns:$(TAG)-$(ARCH) \
@@ -61,6 +62,7 @@ image-build-autoscaler:
 		--build-arg SRC=$(SRC_AUTOSCALER) \
 		--build-arg TAG=$(AUTOSCALER_BUILD_TAG) \
 		--build-arg ARCH=$(ARCH) \
+		--build-arg ORG=$(ORG) \
 		--target autoscaler \
 		--tag $(ORG)/hardened-cluster-autoscaler:$(AUTOSCALER_TAG) \
 		--tag $(ORG)/hardened-cluster-autoscaler:$(AUTOSCALER_TAG)-$(ARCH) \
