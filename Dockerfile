@@ -1,5 +1,5 @@
 ARG ORG=rancher
-ARG BCI_IMAGE=registry.suse.com/bci/bci-base:latest
+ARG BCI_IMAGE=registry.suse.com/bci/bci-base:15.3.17.20.12
 ARG GO_IMAGE=${ORG}/hardened-build-base:v1.20.3b1
 ARG TAG="v1.10.1"
 ARG ARCH="amd64"
